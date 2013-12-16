@@ -88,49 +88,74 @@ class store_export_upd
         ee()->db->insert('modules', $module);
 
         //
-        // Recipients Table
+        // Settings Table (name value pair store)
         //
         $fields = array(
-            'recipient_id'          => array('type' => 'INT',       'unsigned'      => true,    'auto_increment'    => true),
-            'email_id'              => array('type' => 'INT',       'unsigned'      => true),
-            'recipient_name'        => array('type' => 'VARCHAR',   'constraint'    => 100,     'null'              => true,    'default'           => ''),
-            'recipient_email'       => array('type' => 'VARCHAR',   'constraint'    => 100,     'null'              => true,    'default'           => ''),
+            'setting_id'    => array('type' => 'INT',       'unsigned'      => true,    'auto_increment'    => true),
+            'key'           => array('type' => 'VARCHAR',   'constraint'    => 100,     'null'              => true,    'default'   => ''),
+            'value'         => array('type' => 'VARCHAR',   'constraint'    => 100,     'null'              => true,    'default'   => ''),
         );
 
         ee()->dbforge->add_field($fields);
-        ee()->dbforge->add_key('recipient_id', true);
-        ee()->dbforge->create_table('se_recipients', true);
+        ee()->dbforge->add_key('setting_id', true);
+        ee()->dbforge->create_table('se_settings', true);
+
+        //
+        // Recipients Table
+        //
+        // $fields = array(
+        //     'recipient_id'          => array('type' => 'INT',       'unsigned'      => true,    'auto_increment'    => true),
+        //     'email_id'              => array('type' => 'INT',       'unsigned'      => true),
+        //     'recipient_name'        => array('type' => 'VARCHAR',   'constraint'    => 100,     'null'              => true,    'default'           => ''),
+        //     'recipient_email'       => array('type' => 'VARCHAR',   'constraint'    => 100,     'null'              => true,    'default'           => ''),
+        // );
+
+        // ee()->dbforge->add_field($fields);
+        // ee()->dbforge->add_key('recipient_id', true);
+        // ee()->dbforge->create_table('se_recipients', true);
 
         //
         // Email Table
         //
-        $fields = array(
-            'email_id'              => array('type' => 'INT',       'unsigned'      => true,    'auto_increment'    => true),
-            'email_name'            => array('type' => 'VARCHAR',   'constraint'    => 100,     'null'              => true,    'default'           => ''),
-            'email_subject'         => array('type' => 'VARCHAR',   'constraint'    => 200,     'null'              => true,    'default'           => ''),
-            'email_body_orders'     => array('type' => 'VARCHAR',   'constraint'    => 200,     'null'              => true,    'default'           => ''),
-            'email_body_no_orders'  => array('type' => 'VARCHAR',   'constraint'    => 200,     'null'              => true,    'default'           => ''),
-            'email_default'         => array('type' => 'TINYINT',   'unsigned'      => true,    'null'              => true,    'default'           => 0),
-        );
+        // $fields = array(
+        //     'email_id'              => array('type' => 'INT',       'unsigned'      => true,    'auto_increment'    => true),
+        //     'email_name'            => array('type' => 'VARCHAR',   'constraint'    => 100,     'null'              => true,    'default'           => ''),
+        //     'email_subject'         => array('type' => 'VARCHAR',   'constraint'    => 200,     'null'              => true,    'default'           => ''),
+        //     'email_body_orders'     => array('type' => 'VARCHAR',   'constraint'    => 200,     'null'              => true,    'default'           => ''),
+        //     'email_body_no_orders'  => array('type' => 'VARCHAR',   'constraint'    => 200,     'null'              => true,    'default'           => ''),
+        //     'email_default'         => array('type' => 'TINYINT',   'unsigned'      => true,    'null'              => true,    'default'           => 0),
+        // );
 
-        ee()->dbforge->add_field($fields);
-        ee()->dbforge->add_key('email_id', true);
-        ee()->dbforge->create_table('se_emails', true);
+        // ee()->dbforge->add_field($fields);
+        // ee()->dbforge->add_key('email_id', true);
+        // ee()->dbforge->create_table('se_emails', true);
 
         //
         // Log
         //
+        // $fields = array(
+        //     'log_id'                => array('type' => 'INT',       'unsigned'      => true,    'auto_increment'    => true),
+        //     'email_id'              => array('type' => 'INT',       'unsigned'      => true),
+        //     'log_text'              => array('type' => 'VARCHAR',   'constraint'    => 250,     'default'           => ''),
+        //     'orders_total'          => array('type' => 'INT',       'unsigned'      => true,    'default'           => 0),
+        //     'created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP',
+        // );
+
+        // ee()->dbforge->add_field($fields);
+        // ee()->dbforge->add_key('log_id', true);
+        // ee()->dbforge->create_table('se_log', true);
+
+        //
+        // File tracker
+        //
         $fields = array(
-            'log_id'                => array('type' => 'INT',       'unsigned'      => true,    'auto_increment'    => true),
-            'email_id'              => array('type' => 'INT',       'unsigned'      => true),
-            'log_text'              => array('type' => 'VARCHAR',   'constraint'    => 250,     'default'           => ''),
-            'orders_total'          => array('type' => 'INT',       'unsigned'      => true,    'default'           => 0),
+            'file_id'   => array('type' => 'INT', 'unsigned' => true, 'auto_increment' => true),
             'created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP',
         );
 
         ee()->dbforge->add_field($fields);
-        ee()->dbforge->add_key('log_id', true);
-        ee()->dbforge->create_table('se_log', true);
+        ee()->dbforge->add_key('file_id', true);
+        ee()->dbforge->create_table('se_file', true);
 
         return true;
     }
@@ -195,9 +220,11 @@ class store_export_upd
         ee()->db->delete('actions');
 
         // Remove the tables
-        ee()->dbforge->drop_table('se_emails', true);
-        ee()->dbforge->drop_table('se_recipients', true);
-        ee()->dbforge->drop_table('se_log', true);
+        ee()->dbforge->drop_table('se_settings', true);
+        // ee()->dbforge->drop_table('se_emails', true);
+        // ee()->dbforge->drop_table('se_recipients', true);
+        // ee()->dbforge->drop_table('se_log', true);
+        ee()->dbforge->drop_table('se_file', true);
 
         // Required if the module includes fields on the publish page
         // ee()->load->library('layout');

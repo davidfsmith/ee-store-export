@@ -17,7 +17,7 @@ if ( ! defined('STORE_EXPORT_NAME'))
 {
     define('STORE_EXPORT_NAME',          'Store Export');
     define('STORE_EXPORT_MODULE_NAME',   'Store_Export');
-    define('STORE_EXPORT_VERSION',       '1.0');
+    define('STORE_EXPORT_VERSION',       '0.9.0');
 }
 
 $config['name']         = STORE_EXPORT_NAME;

@@ -42,22 +42,20 @@ class store_export_mcp
 
         // Set the module_link
         $this->_module_link = BASE.AMP.'C=addons_modules'.AMP.'M=show_module_cp'.AMP.'module='.STORE_EXPORT_MODULE_NAME;
-        $this->_form_link   = 'C=addons_modules'.AMP.'M=show_module_cp'.AMP.'module='.STORE_EXPORT_MODULE_NAME;
 
         // Set the right navigation
         ee()->cp->set_right_nav(
             array(
-                ee()->lang->line('add_email') => $this->_module_link.AMP.'method=add_email'
-                // ee()->lang->line('config')     => $this->_module_link.AMP.'method=config'
+                ee()->lang->line('config')     => $this->_module_link.AMP.'method=config'
             )
         );
 
         // default global view variables
-        ee()->load->vars(array(
-            'cp_tdl_table_template_recipients' => array(
-                'table_open'        => '<table class="mainTable" id="email_recipients" border="0" cellspacing="0" cellpadding="0">'
-            )
-        ));
+        // ee()->load->vars(array(
+        //     'cp_tdl_table_template_recipients' => array(
+        //         'table_open'        => '<table class="mainTable" id="email_recipients" border="0" cellspacing="0" cellpadding="0">'
+        //     )
+        // ));
     }
 
     /**
@@ -79,13 +77,18 @@ class store_export_mcp
         $vars['download_url'] = $this->_module_link.AMP.'method=create_csv';
 
         // Display the emails in the system
-        $vars['emails'] = ee()->store_export->get_emails();
+        // $vars['emails'] = ee()->store_export->get_emails();
 
-        $vars['modify_email_link']  = $this->_module_link.AMP.'method=mod_email'.AMP.'email_id=';
-        $vars['delete_email_link']  = $this->_module_link.AMP.'method=del_email'.AMP.'email_id=';
-        $vars['send_email_link']    = $this->_module_link.AMP.'method=send_email'.AMP.'email_id=';
+        // $vars['modify_email_link']  = $this->_module_link.AMP.'method=mod_email'.AMP.'email_id=';
+        // $vars['delete_email_link']  = $this->_module_link.AMP.'method=del_email'.AMP.'email_id=';
+        // $vars['send_email_link']    = $this->_module_link.AMP.'method=send_email'.AMP.'email_id=';
+        $vars['settings_link']    = $this->_module_link.AMP.'method=settings';
 
         return ee()->load->view('index', $vars, true);
+    }
+
+    public function settings() {
+        return ee()->load->view('settings', $vars, true);
     }
 
     /**
@@ -362,6 +365,15 @@ class store_export_mcp
         print $orders;
 
         exit;
+    }
+
+    public function config() {
+        // Set the title
+        $this->_set_page_title('store_export_module_name');
+
+        $vars = array();
+
+        return ee()->load->view('config', $vars, true);
     }
 
     private function _set_page_title($title)
