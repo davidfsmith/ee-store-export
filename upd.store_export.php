@@ -100,6 +100,12 @@ class store_export_upd
         ee()->dbforge->add_key('setting_id', true);
         ee()->dbforge->create_table('se_settings', true);
 
+        // Add in the default key / value pairs that we need to setup
+        ee()->db->set('key', 'ftp_file_location');
+        ee()->db->insert('se_settings');
+        ee()->db->set('key', 'ftp_backup_file_location');
+        ee()->db->insert('se_settings');
+
         //
         // Recipients Table
         //

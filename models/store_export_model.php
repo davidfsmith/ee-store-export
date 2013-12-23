@@ -27,8 +27,9 @@ class Store_export_model
     private $_store_shipping_methods    = 'store_shipping_methods';
 
     // TDL Export
-    private $_tdle_emails               = 'se_emails';
-    private $_tdle_emails_recipients    = 'se_recipients';
+    private $_se_emails                 = 'se_emails';
+    private $_se_emails_recipients      = 'se_recipients';
+    private $_se_settings               = 'se_settings';
 
     /**
      * Constructor
@@ -109,89 +110,17 @@ class Store_export_model
 
     }
 
-    public function get_emails()
+    public function get_settings_values()
     {
-        $query = $this->EE->db->get($this->_tdle_emails);
+        $query = $this->EE->db->get($this->_se_settings);
         return $query->result_array();
     }
 
-    public function get_default_email()
+    public function update_settings_values($settings_data)
     {
-        $query = $this->EE->db->get_where($this->_tdle_emails,  array('email_default' => 1), 1, 0);
-        return $query->result_array();
-    }
+        $this->EE->db->update_batch($this->_se_settings, $settings_data, 'key');
 
-    public function get_email($email_id)
-    {
-        $query = $this->EE->db->get_where($this->_tdle_emails,  array('email_id' => $email_id), 1, 0);
-        return $query->result_array();
-    }
-
-    public function update_email($email_data, $email_id = false)
-    {
-        $email_data['email_default'] = 0;
-
-        if ($email_id)
-        {
-            $this->EE->db->where('email_id', $email_id);
-            $this->EE->db->update($this->_tdle_emails, $email_data);
-
-            return ($this->EE->db->affected_rows() > 0) ? $email_id : false;
-        }
-        else
-        {
-            $this->EE->db->insert($this->_tdle_emails, $email_data);
-            return ($this->EE->db->affected_rows() > 0) ? $this->EE->db->insert_id() : false;
-        }
-    }
-
-    public function delete_email($email_id)
-    {
-        if ($this->count_recipients($email_id) > 0)
-        {
-            $this->delete_recipients($email_id);
-        }
-        $this->EE->db->delete($this->_tdle_emails, array('email_id' => $email_id));
         return ($this->EE->db->affected_rows() > 0) ? true : false;
-    }
-
-    public function get_recipients($email_id)
-    {
-        $query = $this->EE->db->get_where($this->_tdle_emails_recipients, array('email_id' => $email_id));
-        return $query->result_array();
-    }
-
-    public function add_recipients($email_recipients, $email_id)
-    {
-        if ($this->count_recipients($email_id) > 0)
-        {
-            $this->delete_recipients($email_id);
-        }
-
-        $row_count = 0;
-        for ($i = 0; $i < sizeof($email_recipients); $i++) {
-            $recipient_data = array(
-                'email_id'          => $email_id,
-                'recipient_name'    => $email_recipients[$i]['email_recipient_name'],
-                'recipient_email'   => $email_recipients[$i]['email_recipient_address']
-            );
-
-            $this->EE->db->insert($this->_tdle_emails_recipients, $recipient_data);
-            $row_count += $this->EE->db->affected_rows();
-        }
-        return ($row_count == sizeof($email_recipients)) ? true : false;
-    }
-
-    public function delete_recipients($email_id)
-    {
-        $this->EE->db->delete($this->_tdle_emails_recipients, array('email_id' => $email_id));
-        return ($this->EE->db->affected_rows() > 0) ? true : false;
-    }
-
-    public function count_recipients($email_id)
-    {
-        ee()->db->where('email_id', $email_id);
-        return ee()->db->count_all_results($this->_tdle_emails_recipients);
     }
 
 }
