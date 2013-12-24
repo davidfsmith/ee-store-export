@@ -105,6 +105,15 @@ class store_export_upd
         ee()->db->insert('se_settings');
         ee()->db->set('key', 'ftp_backup_file_location');
         ee()->db->insert('se_settings');
+        ee()->db->set('key', 'file_prefix');
+        ee()->db->set('value', 'TDCONS');
+        ee()->db->insert('se_settings');
+        ee()->db->set('key', 'file_counter_length');
+        ee()->db->set('value', '9');
+        ee()->db->insert('se_settings');
+        ee()->db->set('key', 'file_counter');
+        ee()->db->set('value', '1');
+        ee()->db->insert('se_settings');
 
         //
         // Recipients Table
@@ -139,17 +148,15 @@ class store_export_upd
         //
         // Log
         //
-        // $fields = array(
-        //     'log_id'                => array('type' => 'INT',       'unsigned'      => true,    'auto_increment'    => true),
-        //     'email_id'              => array('type' => 'INT',       'unsigned'      => true),
-        //     'log_text'              => array('type' => 'VARCHAR',   'constraint'    => 250,     'default'           => ''),
-        //     'orders_total'          => array('type' => 'INT',       'unsigned'      => true,    'default'           => 0),
-        //     'created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP',
-        // );
+        $fields = array(
+            'log_id'                => array('type' => 'INT',       'unsigned'      => true,    'auto_increment'    => true),
+            'log_text'              => array('type' => 'VARCHAR',   'constraint'    => 250,     'default'           => ''),
+            'created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP',
+        );
 
-        // ee()->dbforge->add_field($fields);
-        // ee()->dbforge->add_key('log_id', true);
-        // ee()->dbforge->create_table('se_log', true);
+        ee()->dbforge->add_field($fields);
+        ee()->dbforge->add_key('log_id', true);
+        ee()->dbforge->create_table('se_log', true);
 
         //
         // File tracker

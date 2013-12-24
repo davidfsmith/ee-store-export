@@ -29,14 +29,23 @@ $lang = array(
 'settings'                          => 'Module Settings',
 'unprocessed_order_count'           => 'Total number of unprocessed orders',
 'download_orders'                   => 'Download Orders CSV',
-'no_orders_to_export'               => 'There are no orders to export',
+'no_orders_to_export'               => 'There are no orders to export.',
+'no_log_entries'                    => 'There are no log entries to show.',
 
 'file_number'                       => 'Order file number',
 'file_created_at'                   => 'Created at',
 'no_files_have_been_created'        => 'No files have been created.',
 
-'ftp_file_location'                 => 'FTP File Location',
-'ftp_backup_file_location'          => 'FTP Backup File Location',
+'ftp_file_location'                 => 'FTP File Location (no trailing / required)',
+'ftp_backup_file_location'          => 'FTP Backup File Location (no trailing / required)',
+'file_prefix'                       => 'Filename prefix',
+'file_counter_length'               => 'File counter length',
+'file_counter'                      => 'File counter',
+
+'file_export_fail'                  => 'Main file export failed to write',
+'file_export_success'               => 'Main file export completed successfully',
+'backup_file_export_fail'           => 'Backup file export failed to write',
+'backup_file_export_success'        => 'Backup file export completed successfully',
 
 'submit'                            => 'Submit',
 'settings_updated_success'          => 'Settings successfully updated',
@@ -46,4 +55,4 @@ $lang = array(
 );
 
 /* End of file store_export_lang.php */
-/* Location: ./system/expressionengine/third_party/tdl_export/language/english/store_export_lang.php */
+/* Location: ./system/expressionengine/third_party/store_export/language/english/store_export_lang.php */

@@ -30,6 +30,7 @@ class Store_export_model
     private $_se_emails                 = 'se_emails';
     private $_se_emails_recipients      = 'se_recipients';
     private $_se_settings               = 'se_settings';
+    private $_se_log                    = 'se_log';
 
     /**
      * Constructor
@@ -104,10 +105,22 @@ class Store_export_model
 
         $this->EE->db->where('order_id', $order_id);
         $this->EE->db->update($this->_store_payments, $data);
-
-        // Check we have updated some data
         return ($this->EE->db->affected_rows() > 0) ? true : false;
 
+    }
+
+    public function get_setting_value($key)
+    {
+        $query = $this->EE->db->select(
+            'value'
+        )->from(
+            $this->_se_settings
+        )->where(
+            'key', $key
+        )->get();
+
+        $row = $query->row();
+        return $row->value;
     }
 
     public function get_settings_values()
@@ -116,10 +129,35 @@ class Store_export_model
         return $query->result_array();
     }
 
+    public function update_setting_value($key, $value)
+    {
+        $this->EE->db->update($this->_se_settings, array('value' => $value), array('key' => $key));
+        return ($this->EE->db->affected_rows() > 0) ? true : false;
+    }
+
     public function update_settings_values($settings_data)
     {
         $this->EE->db->update_batch($this->_se_settings, $settings_data, 'key');
+        return ($this->EE->db->affected_rows() > 0) ? true : false;
+    }
 
+    public function get_log_entries($log_entries_count = 5)
+    {
+        $query = $this->EE->db->select(
+            'log_text, created_at'
+        )->from(
+            $this->_se_log
+        )->order_by(
+            'created_at', 'DESC'
+        )->limit(
+            $log_entries_count
+        )->get();
+        return $query->result_array();
+    }
+
+    public function update_log($log_text)
+    {
+        $this->EE->db->insert($this->_se_log, array('log_text' => $log_text));
         return ($this->EE->db->affected_rows() > 0) ? true : false;
     }
 
