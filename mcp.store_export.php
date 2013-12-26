@@ -79,6 +79,14 @@ class store_export_mcp
 
     }
 
+    public function cron_task()
+    {
+        if (ee()->store_export->get_orders_count() > 0)
+        {
+            $this->write_csv();
+        }
+    }
+
     public function write_csv($update = true)
     {
         ee()->load->helper('file');
@@ -87,6 +95,15 @@ class store_export_mcp
 
         $file_name = ee()->store_export->get_setting_value('file_prefix').sprintf("%0".ee()->store_export->get_setting_value('file_counter_length')."d", $file_counter).".csv";
         $csv_data = $this->_create_csv(true);
+
+        if (!write_file(ee()->store_export->get_setting_value('ftp_backup_file_location').'/'.$file_name, $csv_data))
+        {
+            ee()->store_export->update_log('Backup file export failed');
+            ee()->session->set_flashdata('message_failure', ee()->lang->line('backup_file_export_fail'));
+        } else {
+            ee()->store_export->update_log('Backup file export completed');
+            ee()->session->set_flashdata('message_success', ee()->lang->line('backup_file_export_success'));
+        }
 
         if (!write_file(ee()->store_export->get_setting_value('ftp_file_location').'/'.$file_name, $csv_data))
         {
@@ -97,15 +114,11 @@ class store_export_mcp
             ee()->store_export->update_setting_value('file_counter', $file_counter);
             ee()->store_export->update_log('Main file export completed');
             ee()->session->set_flashdata('message_success', ee()->lang->line('file_export_success'));
-        }
 
-        if (!write_file(ee()->store_export->get_setting_value('ftp_backup_file_location').'/'.$file_name, $csv_data))
-        {
-            ee()->store_export->update_log('Backup file export failed');
-            ee()->session->set_flashdata('message_failure', ee()->lang->line('backup_file_export_fail'));
-        } else {
-            ee()->store_export->update_log('Backup file export completed');
-            ee()->session->set_flashdata('message_success', ee()->lang->line('backup_file_export_success'));
+            if (ee()->store_export->get_setting_value('confirmation_email_active') == 1)
+            {
+                $this->_send_confirmation_email();
+            }
         }
 
         ee()->functions->redirect($this->_module_link);
@@ -184,6 +197,22 @@ class store_export_mcp
         return $orders;
     }
 
+    private function _send_confirmation_email()
+    {
+        ee()->load->library('email');
+        ee()->email->from(ee()->store_export->get_setting_value('confirmation_email_sender'));
+        ee()->email->to(ee()->store_export->get_setting_value('confirmation_email_recipient'));
+        ee()->email->subject(ee()->store_export->get_setting_value('confirmation_email_subject'));
+        ee()->email->message(ee()->store_export->get_setting_value('confirmation_email_message'));
+
+        if (ee()->email->Send(true)) {
+            ee()->store_export->update_log('Email sent successfully');
+        } else {
+            ee()->store_export->update_log('There was a problem sending the email');
+        }
+
+        return;
+    }
 
     private function _set_page_title($title)
     {

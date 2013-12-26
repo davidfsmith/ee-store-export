@@ -114,36 +114,21 @@ class store_export_upd
         ee()->db->set('key', 'file_counter');
         ee()->db->set('value', '1');
         ee()->db->insert('se_settings');
-
-        //
-        // Recipients Table
-        //
-        // $fields = array(
-        //     'recipient_id'          => array('type' => 'INT',       'unsigned'      => true,    'auto_increment'    => true),
-        //     'email_id'              => array('type' => 'INT',       'unsigned'      => true),
-        //     'recipient_name'        => array('type' => 'VARCHAR',   'constraint'    => 100,     'null'              => true,    'default'           => ''),
-        //     'recipient_email'       => array('type' => 'VARCHAR',   'constraint'    => 100,     'null'              => true,    'default'           => ''),
-        // );
-
-        // ee()->dbforge->add_field($fields);
-        // ee()->dbforge->add_key('recipient_id', true);
-        // ee()->dbforge->create_table('se_recipients', true);
-
-        //
-        // Email Table
-        //
-        // $fields = array(
-        //     'email_id'              => array('type' => 'INT',       'unsigned'      => true,    'auto_increment'    => true),
-        //     'email_name'            => array('type' => 'VARCHAR',   'constraint'    => 100,     'null'              => true,    'default'           => ''),
-        //     'email_subject'         => array('type' => 'VARCHAR',   'constraint'    => 200,     'null'              => true,    'default'           => ''),
-        //     'email_body_orders'     => array('type' => 'VARCHAR',   'constraint'    => 200,     'null'              => true,    'default'           => ''),
-        //     'email_body_no_orders'  => array('type' => 'VARCHAR',   'constraint'    => 200,     'null'              => true,    'default'           => ''),
-        //     'email_default'         => array('type' => 'TINYINT',   'unsigned'      => true,    'null'              => true,    'default'           => 0),
-        // );
-
-        // ee()->dbforge->add_field($fields);
-        // ee()->dbforge->add_key('email_id', true);
-        // ee()->dbforge->create_table('se_emails', true);
+        ee()->db->set('key', 'confirmation_email_active');
+        ee()->db->set('value', '1');
+        ee()->db->insert('se_settings');
+        ee()->db->set('key', 'confirmation_email_sender');
+        ee()->db->set('value', 'website@wirewool.com');
+        ee()->db->insert('se_settings');
+        ee()->db->set('key', 'confirmation_email_recipient');
+        ee()->db->set('value', 'david.smith@wirewool.com');
+        ee()->db->insert('se_settings');
+        ee()->db->set('key', 'confirmation_email_subject');
+        ee()->db->set('value', 'TDL Website Export Completed.');
+        ee()->db->insert('se_settings');
+        ee()->db->set('key', 'confirmation_email_message');
+        ee()->db->set('value', 'The orders have been exported for the TDL website.');
+        ee()->db->insert('se_settings');
 
         //
         // Log
@@ -157,18 +142,6 @@ class store_export_upd
         ee()->dbforge->add_field($fields);
         ee()->dbforge->add_key('log_id', true);
         ee()->dbforge->create_table('se_log', true);
-
-        //
-        // File tracker
-        //
-        $fields = array(
-            'file_id'   => array('type' => 'INT', 'unsigned' => true, 'auto_increment' => true),
-            'created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP',
-        );
-
-        ee()->dbforge->add_field($fields);
-        ee()->dbforge->add_key('file_id', true);
-        ee()->dbforge->create_table('se_file', true);
 
         return true;
     }
@@ -234,10 +207,7 @@ class store_export_upd
 
         // Remove the tables
         ee()->dbforge->drop_table('se_settings', true);
-        // ee()->dbforge->drop_table('se_emails', true);
-        // ee()->dbforge->drop_table('se_recipients', true);
-        // ee()->dbforge->drop_table('se_log', true);
-        ee()->dbforge->drop_table('se_file', true);
+        ee()->dbforge->drop_table('se_log', true);
 
         // Required if the module includes fields on the publish page
         // ee()->load->library('layout');

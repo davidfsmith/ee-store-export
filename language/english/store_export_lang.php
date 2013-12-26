@@ -47,6 +47,12 @@ $lang = array(
 'backup_file_export_fail'           => 'Backup file export failed to write',
 'backup_file_export_success'        => 'Backup file export completed successfully',
 
+'confirmation_email_active'         => 'Send export email confirmation (1 == Yes)',
+'confirmation_email_sender'         => 'Email confirmation sender address',
+'confirmation_email_recipient'      => 'Email confirmation recipient address',
+'confirmation_email_subject'        => 'Email confirmation subject',
+'confirmation_email_message'        => 'Email confirmation message',
+
 'submit'                            => 'Submit',
 'settings_updated_success'          => 'Settings successfully updated',
 'settings_updated_fail'             => 'There was a problem updating the settings'
