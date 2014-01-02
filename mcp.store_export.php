@@ -66,17 +66,12 @@ class store_export_mcp
         $vars['files'] = array();
 
         $vars['unprocessed_order_count'] = ee()->store_export->get_orders_count();
-        $vars['download_url']   = $this->_module_link.AMP.'method=create_csv';
+        $vars['download_url']   = $this->_module_link.AMP.'method=download_csv';
         $vars['settings_link']  = $this->_module_link.AMP.'method=settings';
 
         $vars['log_entries'] = ee()->store_export->get_log_entries();
 
         return ee()->load->view('index', $vars, true);
-    }
-
-    public function download_csv()
-    {
-
     }
 
     public function cron_task()
@@ -124,7 +119,7 @@ class store_export_mcp
         ee()->functions->redirect($this->_module_link);
     }
 
-    public function print_csv($update = true)
+    public function download_csv($update = true)
     {
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment; filename="orders.csv"');
