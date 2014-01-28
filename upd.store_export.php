@@ -143,6 +143,15 @@ class store_export_upd
         ee()->dbforge->add_key('log_id', true);
         ee()->dbforge->create_table('se_log', true);
 
+        //
+        // Create the action id
+        //
+        $data = array(
+            'class'     => $this->module_name,
+            'method'    => 'cron_task'
+        );
+        ee()->db->insert('actions', $data);
+
         return true;
     }
 
@@ -208,6 +217,10 @@ class store_export_upd
         // Remove the tables
         ee()->dbforge->drop_table('se_settings', true);
         ee()->dbforge->drop_table('se_log', true);
+
+        // Remove the action
+        ee()->db->where($this->module_name, 'cron_task');
+        ee()->db->delete('actions');
 
         // Required if the module includes fields on the publish page
         // ee()->load->library('layout');

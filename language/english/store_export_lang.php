@@ -27,6 +27,7 @@ $lang = array(
 
 // Additional Key => Value pairs go here
 'settings'                          => 'Module Settings',
+'cron_link'                         => 'Cron URL',
 'unprocessed_order_count'           => 'Total number of unprocessed orders',
 'download_orders'                   => 'Download Orders CSV',
 'no_orders_to_export'               => 'There are no orders to export.',

@@ -46,7 +46,8 @@ class store_export_mcp
         // Set the right navigation
         ee()->cp->set_right_nav(
             array(
-                ee()->lang->line('settings')     => $this->_module_link.AMP.'method=settings'
+                ee()->lang->line('settings')     => $this->_module_link.AMP.'method=settings',
+                ee()->lang->line('cron_link')    => 'index.php?ACT='.ee()->cp->fetch_action_id('Store_Export', 'cron_task')
             )
         );
     }
