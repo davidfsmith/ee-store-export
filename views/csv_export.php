@@ -1,10 +1,11 @@
 <?php
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment; filename="orders.csv"');
-?>
-A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,AA,AB,AC,AD,AE,AF,AG,AH,AI,AJ,AK,AL,AM,AN,AO,AP,AQ,AR,AS,AT,AU,AV,AW,AX,AY,AZ
-order_id,,order_item_id,billing_name,billing_email,billing_phone,billing_address1,billing_address2,billing_address3,billing_postcode,billing_country,,order_custom1,,shipping_name,shipping_address1,shipping_address2,shipping_address3,shipping_postcode,shipping_country,item_qty,,sku,title,,price_inc_tax,item_total,delivery_charge,,,,,,,,,,,,,,,shipping_method,,price_inc_tax,order_shipping
-<?php
+
+//A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,AA,AB,AC,AD,AE,AF,AG,AH,AI,AJ,AK,AL,AM,AN,AO,AP,AQ,AR,AS,AT,AU,AV,AW,AX,AY,AZ
+// Updated order of items
+//order_id,,order_item_id,shipping_name,billing_email,billing_phone,shipping_address1,shipping_address2,shipping_address3,shipping_postcode,shipping_country,,order_custom1,,billing_name,billing_address1,billing_address2,billing_address3,billing_postcode,billing_country,item_qty,,sku,title,,price_inc_tax,item_total,delivery_charge,,,,,,,,,,,,,,,shipping_method,,price_inc_tax,order_shipping
+
 if (sizeof($orders > 0)):
     foreach ($orders as $order) {
 ?>
