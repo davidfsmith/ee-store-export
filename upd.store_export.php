@@ -144,11 +144,16 @@ class store_export_upd
         ee()->dbforge->create_table('se_log', true);
 
         //
-        // Create the action id
+        // Create the action ids
         //
         $data = array(
             'class'     => $this->module_name,
             'method'    => 'cron_task'
+        );
+        ee()->db->insert('actions', $data);
+        $data = array(
+            'class'     => $this->module_name,
+            'method'    => 'download_csv'
         );
         ee()->db->insert('actions', $data);
 
